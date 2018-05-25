@@ -91,6 +91,9 @@
 import axios from 'axios'
 let todoApiUrl = process.env.TODO_API_URL || 'http://localhost:8000'
 export default {
+  fetch({store, params}) {
+    console.log('###FETCH!')
+  },
   async asyncData (context) {
     const { data: todoItems } = await axios.get(`${todoApiUrl}/todo?status=TODO`)
     const { data: progressItems } = await axios.get(`${todoApiUrl}/todo?status=PROGRESS`)
