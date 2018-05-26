@@ -10,7 +10,7 @@
         </v-list>
         <v-list>
           <v-list-item>
-            <v-card v-for="item in todoItems" v-bind:key="item.id">
+            <v-card v-for="item in TodoItems" v-bind:key="item.id">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">{{ item.title }}</h3>
@@ -38,7 +38,7 @@
         </v-list>
         <v-list>
           <v-list-item>
-            <v-card v-for="item in progressItems" v-bind:key="item.id">
+            <v-card v-for="item in ProgressItems" v-bind:key="item.id">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">{{ item.title }}</h3>
@@ -66,7 +66,7 @@
         </v-list>
         <v-list>
           <v-list-item>
-            <v-card v-for="item in doneItems" v-bind:key="item.id">
+            <v-card v-for="item in DoneItems" v-bind:key="item.id">
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">{{ item.title }}</h3>
@@ -88,20 +88,24 @@
 </template>
 
 <script>
-import axios from 'axios'
-let todoApiUrl = process.env.TODO_API_URL || 'http://localhost:8000'
 export default {
-  fetch({store, params}) {
-    console.log('###FETCH!')
+  fetch ({store}) {
+    store.dispatch('getTodoItems')
+    store.dispatch('getProgressItems')
+    store.dispatch('getDoneItems')
   },
-  async asyncData (context) {
-    const { data: todoItems } = await axios.get(`${todoApiUrl}/todo?status=TODO`)
-    const { data: progressItems } = await axios.get(`${todoApiUrl}/todo?status=PROGRESS`)
-    const { data: doneItems } = await axios.get(`${todoApiUrl}/todo?status=DONE`)
-    return {
-      todoItems,
-      progressItems,
-      doneItems
+  computed: {
+    TodoItems () {
+      console.log('***************')
+      console.log(this.$store.state.todoItems)
+      console.log('***************')
+      return this.$store.state.todoItems
+    },
+    ProgressItems () {
+      return this.$store.state.progressItems
+    },
+    DoneItems () {
+      return this.$store.state.doneItems
     }
   }
 }

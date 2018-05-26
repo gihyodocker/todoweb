@@ -1,4 +1,6 @@
 
+const nodeExternals = require('webpack-node-externals')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -16,7 +18,8 @@ module.exports = {
     ]
   },
   plugins: [
-    '~/plugins/vuetify.js'
+    '~/plugins/vuetify.js',
+    '~/plugins/axios.js'
   ],
   css: [
     '~/assets/style/app.styl'
@@ -29,22 +32,17 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: [
-      '~/plugins/vuetify.js',
-      'axios'
-    ],
+    // vendor: [
+    //   '~/plugins/vuetify.js',
+    //   'axios'
+    // ],
     extractCSS: true,
     /*
     ** Run ESLint on save
     */
     extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
+      if (ctx.isServer) {
+        config.externals = [nodeExternals({ whitelist: [/^vuetify/] })]
       }
     }
   }
