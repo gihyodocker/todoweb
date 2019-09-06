@@ -1,8 +1,10 @@
+process.env.DEBUG = 'nuxt:*'
 
 module.exports = {
   /*
   ** Headers of the page
   */
+  debug: true,
   head: {
     title: 'todoweb',
     meta: [
